@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.cor.pucmm.main.Main
+Main-Class: com.cor.pucmm.cor.main.Main
 

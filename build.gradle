@@ -14,7 +14,7 @@ buildscript {
 }
 sourceCompatibility = 1.8
 
-mainClassName = "com.cor.pucmm.main.Main"
+mainClassName = "com.cor.pucmm.cor.main.Main"
 
 repositories {
     mavenCentral()
