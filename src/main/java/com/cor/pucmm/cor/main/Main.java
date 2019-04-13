@@ -6,6 +6,7 @@ import com.cor.pucmm.cor.entidades.*;
 import com.cor.pucmm.cor.services.UrlsService;
 import com.cor.pucmm.cor.services.UsuarioService;
 import com.cor.pucmm.cor.services.VisitaService;
+import com.cor.pucmm.cor.soap.Arranque;
 import com.cor.pucmm.cor.utils.JsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -40,13 +41,14 @@ public class Main {
     private static String contrasenia = "proyectoFinal";
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         DbService.getInstancia().iniciarDn();
         Configuration configuration = new Configuration(Configuration.getVersion());
         configuration.setClassForTemplateLoading(Main.class, "/templates");
         crearEntidades();
         enableDebugScreen();
         Codec codec = Codec.forName("Base16");
+        Arranque.init();
         /*byte[] toEncoded = codec.newEncoder().encode(1);
         for (byte b: toEncoded) {
             System.out.println(b);
@@ -194,6 +196,15 @@ public class Main {
                         UsuarioService.getInstancia().editar(usuario);
                         usuario.setListaUrls(null);
                         return usuario;
+                    }, JsonUtils.json());
+                    delete("/:usuario", (request, response) -> {
+                        Usuario usuario = UsuarioService.getInstancia().find(request.params("usuario"));
+                        if (usuario.getRol().equals("manager")) {
+                            return false;
+                        } else {
+                            UsuarioService.getInstancia().eliminar(usuario.getUsuario());
+                            return true;
+                        }
                     }, JsonUtils.json());
             });
             path("/url", () -> {
