@@ -169,6 +169,7 @@ public class Main {
                             // response.cookie("/", "usuario", userEncripted, esMantenerSesion, false);
                             // response.cookie("/", "userRol", userRol, esMantenerSesion, false);
                             // response.cookie("/", "esAutor", userAutor, esMantenerSesion, false);
+                            usuario.setListaUrls(null);
                             return usuario;
                         } else {
                             return null;
@@ -187,10 +188,21 @@ public class Main {
                         }
                         return arrayListUrls;
                     }, JsonUtils.json());
+                    put("/cambiarRol/:usuario/:rol", (request, response) -> {
+                        Usuario usuario = UsuarioService.getInstancia().find(request.params("usuario"));
+                        usuario.setRol(request.params("rol"));
+                        UsuarioService.getInstancia().editar(usuario);
+                        usuario.setListaUrls(null);
+                        return usuario;
+                    }, JsonUtils.json());
             });
             path("/url", () -> {
                 get("/urls", (request, response) -> {
                     return UrlsService.getInstancia().findAll();
+                }, JsonUtils.json());
+                delete("/:urlCodigo", (request, response) -> {
+                    UrlsService.getInstancia().eliminar(Long.valueOf(request.params("urlCodigo")));
+                    return true;
                 }, JsonUtils.json());
             });
         });

@@ -24,7 +24,7 @@ public class Visita implements Serializable {
 
     public Date fechaGuardado;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     public UrlS urlS;
 
     public Time getHora() {

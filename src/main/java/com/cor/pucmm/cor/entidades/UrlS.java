@@ -17,7 +17,7 @@ public class UrlS implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "urlS", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "urlS", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Visita> visitas;
 
     public long getCodigo() {
